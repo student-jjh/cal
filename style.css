@@ -1,0 +1,29 @@
+#button-area{
+    height: 300px;
+    width: 300px;
+}
+#first-buttons{
+    width: 300px;
+    display: flex;
+    flex:1;
+}
+#second-buttons{
+    width: 300px;
+    display: flex;
+    flex:1;
+}
+#third-buttons{
+    width: 300px;
+    display: flex;
+    flex:1;
+}
+#four-buttons{
+    width: 300px;
+    display: flex;
+    flex:1;
+}
+#five-buttons{
+    width: 300;
+    display: flex;
+    flex:1;
+}
