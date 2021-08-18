@@ -1,3 +1,4 @@
+window.resizeTo(300,300);
 let space=document.getElementById('cal-space');
 //숫자 버튼 
 const num_one = document.getElementById('one-button');
