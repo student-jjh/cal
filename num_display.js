@@ -18,50 +18,86 @@ const divide_button =document.getElementById('divide-button');
 const multiple_button =document.getElementById('multiple-button');
 const equal_button = document.getElementById('equal-button');
 const reverse_button = document.getElementById('reverse-button');
-const percent_button = document.getElementById('percent-button');
+const back_button = document.getElementById('back-button');
+const comma_button = document.getElementById('comma-button');
 // 중간 과정 
 let calReady=false;
-let FIRST_NUM=0;
-let SECOND_NUM=0;
-let CAL;
+let FIRST_NUM='ready';
+let SECOND_NUM='ready';
+let CAL=-1;
 let RESULT=0;
+let NEWNUM=true;
+let MIDDLE_CAL=false;
+let CALBUTTONCLICKED=false;
 // all clear
 const allClearButton = document.getElementById('all-clear');
-
+// 숫자 클릭시 작동하는 이벤트
 function handleNumClick(event){
-    if (space.innerText=='0'){
+    if (CAL!=-1){
+        SECOND_NUM='non_ready';
+    }
+    if (space.innerText=='0' || NEWNUM === true){
         space.innerText=event.target.value;
+        NEWNUM=false;
     } else{
         space.innerText=space.innerText+event.target.value;
     }
 }
-
-
+//계산 기능 누를 때 작동하는 이벤트
 function handleCal(event) {
-    FIRST_NUM=space.innerText;
-    CAL=event.target.value;
-    space.innerText='0';
+    NEWNUM=true;
+    if (CAL == -1 || SECOND_NUM =='ready'){
+        FIRST_NUM=space.innerText;
+        CAL=event.target.value;
+    }else if (CAL !=-1){
+        SECOND_NUM=space.innerText;
+        space.innerText=eval(FIRST_NUM+CAL+SECOND_NUM);
+        CAL=event.target.value;
+        FIRST_NUM=space.innerText;
+        SECOND_NUM='ready'
+    }
+//=표시 클릭하면 작동하는 이벤트    
 }
 function handleEqualClick(event) {
     SECOND_NUM=space.innerText;
     space.innerText=eval(FIRST_NUM+CAL+SECOND_NUM);
+    FIRST_NUM='ready';
+    SECOND_NUM='ready';
+    CAL=-1;
+    NEWNUM=true;
 }
+//AC버튼 누를 때 작동하는 이벤트
 function allClear(){
-    FIRST_NUM=0;
-    SECOND_NUM=0;
-    CAL=NaN;
+    FIRST_NUM='ready';
+    SECOND_NUM='ready';
+    CAL=-1;
     space.innerText='0';
 }
-
+//+/-버튼 누를 때 작동하는 이벤트
 function handleReverse(){
     space.innerText=eval('-1*'+space.innerText);
+    NEWNUM=true;
 }
-
-function percent(){
-    space.innerText=eval('0.01*'+space.innerText);
+//화면에 나와있는 숫자를 하나씩 지워가면서 나오게 하는 이벤트
+function back(){
+    if (space.innerText!='0'){
+        space.innerText=space.innerText.slice(0,-1);
+        if (space.innerText=='' ||space.innerText=='-'){
+            space.innerText='0';
+        }
+    }
 }
-
-
+//소숫점 표시하기 위한 이벤트
+function comma() {
+    if (space.innerText.indexOf('.')==-1 && NEWNUM===false) {
+        console.log("1");
+        space.innerText=space.innerText+'.';
+    }else if(NEWNUM===true){
+        space.innerText='0.'
+        NEWNUM=false;
+    }   
+}
+//숫자 버튼에 이벤트 할당
 num_one.addEventListener('click',handleNumClick);
 num_two.addEventListener('click',handleNumClick);
 num_three.addEventListener('click',handleNumClick);
@@ -72,13 +108,13 @@ num_seven.addEventListener('click',handleNumClick);
 num_eight.addEventListener('click',handleNumClick);
 num_nine.addEventListener('click',handleNumClick);
 num_zero.addEventListener('click',handleNumClick);
-
+//계산 기호 및 기능에 이벤트 할당
 plus_button.addEventListener("click",handleCal);
 minus_button.addEventListener("click",handleCal);
 divide_button.addEventListener("click",handleCal);
 multiple_button.addEventListener("click",handleCal);
 equal_button.addEventListener("click",handleEqualClick);
 reverse_button.addEventListener('click',handleReverse);
-percent_button.addEventListener('click',percent);
-
+back_button.addEventListener('click',back);
+comma_button.addEventListener('click',comma);
 allClearButton.addEventListener('click',allClear);
