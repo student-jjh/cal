@@ -29,6 +29,8 @@ let RESULT=0;
 let NEWNUM=true;
 let MIDDLE_CAL=false;
 let CALBUTTONCLICKED=false;
+let EQUALCLICK=false;
+let temp_num=NaN;
 // all clear
 const allClearButton = document.getElementById('all-clear');
 // 숫자 클릭시 작동하는 이벤트
@@ -56,15 +58,26 @@ function handleCal(event) {
         FIRST_NUM=space.innerText;
         SECOND_NUM='ready'
     }
+    EQUALCLICK=false;
 //=표시 클릭하면 작동하는 이벤트    
 }
 function handleEqualClick(event) {
-    SECOND_NUM=space.innerText;
-    space.innerText=eval(FIRST_NUM+CAL+SECOND_NUM);
-    FIRST_NUM='ready';
-    SECOND_NUM='ready';
-    CAL=-1;
-    NEWNUM=true;
+    if (EQUALCLICK==false){
+        SECOND_NUM=space.innerText;
+        space.innerText=eval(FIRST_NUM+CAL+SECOND_NUM);
+        FIRST_NUM=space.innerText;
+        NEWNUM=true;
+        EQUALCLICK=true;
+        temp_num=SECOND_NUM;
+        SECOND_NUM='ready';
+    }else{
+        SECOND_NUM=temp_num
+        space.innerText=eval(FIRST_NUM+CAL+SECOND_NUM);
+        FIRST_NUM=space.innerText;
+        NEWNUM=true;
+        SECOND_NUM='ready';
+    }
+    
 }
 //AC버튼 누를 때 작동하는 이벤트
 function allClear(){
@@ -72,6 +85,7 @@ function allClear(){
     SECOND_NUM='ready';
     CAL=-1;
     space.innerText='0';
+    EQUALCLICK=false;
 }
 //+/-버튼 누를 때 작동하는 이벤트
 function handleReverse(){
